@@ -68,10 +68,26 @@ const loginApi = (email, password) => {
     });
 };
 
+const signupApi = (username, email, password) => {
+  axios
+    .post(`${baseUrl}/members/signup`, {
+      username: username,
+      email: email,
+      password: password,
+    })
+    .then((response) => {
+      window.location.href = "/login";
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+};
+
 export {
   getHairstylistsApi,
   getProductsApi,
   getBrandsApi,
-  loginApi,
   getProductAndBrandApi,
+  loginApi,
+  signupApi,
 };

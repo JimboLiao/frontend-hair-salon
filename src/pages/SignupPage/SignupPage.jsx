@@ -1,6 +1,8 @@
 import { styled } from "styled-components";
 import { StyledContainer } from "../../components/common";
 import { Box, Button, Stack, TextField } from "@mui/material";
+import { signupApi } from "../../api";
+import { useState } from "react";
 
 const StyledSignupBlock = styled.div`
   margin: 64px 128px;
@@ -22,9 +24,26 @@ const StyledFormContainer = styled.div`
 
 const SignupPage = () => {
   const formBoxStyle = { display: "flex", flexDirection: "column" };
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleUsernameText = (event) => {
+    setUsername(event.target.value);
+  };
+  const handleEmailText = (event) => {
+    setEmail(event.target.value);
+  };
+  const handlePasswordText = (event) => {
+    setPassword(event.target.value);
+  };
   //@todo onclick
   const handleSignUp = (event) => {
-    console.log(event.target);
+    if (username && email && password) {
+      signupApi(username, email, password);
+    } else {
+      alert("Data missing. Please check.");
+    }
   };
   return (
     <main>
@@ -38,6 +57,7 @@ const SignupPage = () => {
                 id="username"
                 label="username"
                 sx={{ paddingBottom: 1 }}
+                onChange={handleUsernameText}
               />
               <TextField
                 required
@@ -45,6 +65,7 @@ const SignupPage = () => {
                 label="E-mail"
                 type="email"
                 sx={{ paddingBottom: 1 }}
+                onChange={handleEmailText}
               />
               <TextField
                 required
@@ -52,6 +73,7 @@ const SignupPage = () => {
                 label="Password"
                 type="password"
                 sx={{ paddingBottom: 1 }}
+                onChange={handlePasswordText}
               />
             </Box>
             <Stack
