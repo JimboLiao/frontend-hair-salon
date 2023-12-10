@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 const getArrayDataApi = async (route) => {
   return axios
@@ -60,7 +61,7 @@ const loginApi = (email, password) => {
     })
     .then((response) => {
       const token = response.data.token;
-      document.cookie = `token=${token}`;
+      Cookies.set("token", token, { expires: 1 });
       window.location.href = "/";
     })
     .catch((error) => {
