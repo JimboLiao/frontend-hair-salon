@@ -5,6 +5,7 @@ import LogoLink from "../common/LogoLink";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import MenuDrawer from "../common/MenuDrawer";
+import Cookies from "js-cookie";
 const StyledHeader = styled.header`
   background-color: #3072ff;
   display: flex;
@@ -29,6 +30,9 @@ const StyledHeader = styled.header`
   .login-btn {
     margin-right: 25px;
   }
+  .member-btn {
+    margin-right: 25px;
+  }
   .menu-container {
     margin-right: 25px;
   }
@@ -38,6 +42,7 @@ const RootHeader = () => {
   const theme = useTheme();
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const pages = ["about", "products", "cart"];
+  const token = Cookies.get("token");
 
   return (
     <StyledHeader>
@@ -47,16 +52,22 @@ const RootHeader = () => {
       {isDownMd ? (
         // screen size below md
         <div className="menu-container">
-          <MenuDrawer pages={pages} />
+          <MenuDrawer pages={pages} token={token} />
         </div>
       ) : (
         // screen size over md
         <>
           <div className="btn-container">
             <NavBar pages={pages} />
-            <div className="login-btn">
-              <Link to="/login">LOGIN</Link>
-            </div>
+            {token ? (
+              <div className="member-btn">
+                <Link to="/member">MEMBER</Link>
+              </div>
+            ) : (
+              <div className="login-btn">
+                <Link to="/login">LOGIN</Link>
+              </div>
+            )}
           </div>
         </>
       )}
