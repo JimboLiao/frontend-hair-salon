@@ -44,6 +44,46 @@ const getOneDataApi = async (route) => {
     });
 };
 
+const getOneDataWithAuthApi = async (route) => {
+  const token = Cookies.get("token");
+  if (!token) return null;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios
+    .get(`${baseUrl}/${route}`, config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+const updateDataWithAuthApi = async (route, data) => {
+  const token = Cookies.get("token");
+  if (!token) return null;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios
+    .put(`${baseUrl}/${route}`, data, config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 const getHairstylistsApi = async () => {
   const arrayData = await getArrayDataApi("hairstylists");
   return arrayData;
@@ -96,6 +136,21 @@ const signupApi = (username, email, password) => {
     });
 };
 
+const getMemberApi = async () => {
+  const id = Cookies.get("id");
+  if (!id) return null;
+  const data = await getOneDataWithAuthApi(`members/${id}/profile`);
+  return data;
+};
+
+const updateMemberApi = async (data) => {
+  const id = Cookies.get("id");
+  if (!id) return null;
+  const result = await updateDataWithAuthApi(`members/${id}/`, data);
+  console.log("result:", result);
+  return result;
+};
+
 export {
   getHairstylistsApi,
   getProductsApi,
@@ -104,4 +159,6 @@ export {
   loginApi,
   signupApi,
   removeCookies,
+  getMemberApi,
+  updateMemberApi,
 };

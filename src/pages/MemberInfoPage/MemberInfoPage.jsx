@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { StyledContainer } from "../../components/common";
 import { Button, Grid, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getMemberApi, updateMemberApi } from "../../api";
 const StyledMemberInfo = styled.div`
   padding-top: 64px;
   padding-bottom: 64px;
@@ -27,8 +28,47 @@ const MemberInfoPage = () => {
   const [postNumber, setPostNumber] = useState("postNumber");
   const [address, setAddress] = useState("address");
 
+  useEffect(() => {
+    const getMemberInfo = async () => {
+      const data = await getMemberApi();
+      setEmail(data.email);
+      setUsername(data.username);
+      setBirthday(data.birthday);
+      setFirstName(data.firstName);
+      setLastName(data.lastName);
+      setCity(data.city);
+      setPostNumber(data.postNumber);
+      setAddress(data.address);
+    };
+
+    getMemberInfo();
+  }, []);
+
   const handleUpdate = (event) => {
-    setIsEdit(!isEdit);
+    setIsEdit(true);
+  };
+
+  const handleConfirm = (event) => {
+    const updateApi = async (data) => {
+      try {
+        await updateMemberApi(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    setIsEdit(false);
+    const dataToUpdate = {
+      email: email,
+      username: username,
+      birthday: birthday,
+      firstName: firstName,
+      lastName: lastName,
+      city: city,
+      postNumber: postNumber,
+      address: address,
+    };
+    updateApi(dataToUpdate);
   };
 
   const handleEmailText = (event) => {
@@ -69,7 +109,7 @@ const MemberInfoPage = () => {
                 fullWidth
                 label="E-mail"
                 variant="outlined"
-                value={email}
+                value={email || ""}
                 disabled={!isEdit}
                 onChange={handleEmailText}
                 InputLabelProps={{ shrink: true }}
@@ -80,7 +120,7 @@ const MemberInfoPage = () => {
                 fullWidth
                 label="User Name"
                 variant="outlined"
-                value={username}
+                value={username || ""}
                 disabled={!isEdit}
                 onChange={handleUsernameText}
                 InputLabelProps={{ shrink: true }}
@@ -92,7 +132,7 @@ const MemberInfoPage = () => {
                 label="Birthday"
                 variant="outlined"
                 type="date"
-                value={birthday}
+                value={birthday || ""}
                 disabled={!isEdit}
                 onChange={handleBirthdayText}
                 InputLabelProps={{ shrink: true }}
@@ -104,7 +144,7 @@ const MemberInfoPage = () => {
                 label="First Name"
                 variant="outlined"
                 disabled={!isEdit}
-                value={firstName}
+                value={firstName || ""}
                 onChange={handleFirstNameText}
                 InputLabelProps={{ shrink: true }}
               />
@@ -115,7 +155,7 @@ const MemberInfoPage = () => {
                 label="Last Name"
                 variant="outlined"
                 disabled={!isEdit}
-                value={lastName}
+                value={lastName || ""}
                 onChange={handleLastNameText}
                 InputLabelProps={{ shrink: true }}
               />
@@ -126,7 +166,7 @@ const MemberInfoPage = () => {
                 label="City"
                 variant="outlined"
                 disabled={!isEdit}
-                value={city}
+                value={city || ""}
                 onChange={handleCityText}
                 InputLabelProps={{ shrink: true }}
               />
@@ -137,7 +177,7 @@ const MemberInfoPage = () => {
                 label="Post Number"
                 variant="outlined"
                 disabled={!isEdit}
-                value={postNumber}
+                value={postNumber || ""}
                 onChange={handlePostNumberText}
                 InputLabelProps={{ shrink: true }}
               />
@@ -148,7 +188,7 @@ const MemberInfoPage = () => {
                 label="Address"
                 variant="outlined"
                 disabled={!isEdit}
-                value={address}
+                value={address || ""}
                 onChange={handleAddressText}
                 InputLabelProps={{ shrink: true }}
               />
@@ -156,7 +196,7 @@ const MemberInfoPage = () => {
             <Grid item xs={12}>
               <Button
                 variant={isEdit ? "contained" : "outlined"}
-                onClick={handleUpdate}
+                onClick={isEdit ? handleConfirm : handleUpdate}
               >
                 {isEdit ? "CONFIRM" : "UPDATE"}
               </Button>
