@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { SignupPage } from "./pages/SignupPage";
 import { PaymentPage } from "./pages/PaymentPage";
 import { OrderPage } from "./pages/OrderPage";
+import { MemberInfoPage } from "./pages/MemberInfoPage";
 import "./App.css";
 
 const router = createBrowserRouter([
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
       { path: "signup", element: <SignupPage /> },
       { path: "payment", element: <PaymentPage /> },
       { path: "order", element: <OrderPage /> },
+      { path: "member", element: <MemberInfoPage /> },
     ],
   },
 ]);
