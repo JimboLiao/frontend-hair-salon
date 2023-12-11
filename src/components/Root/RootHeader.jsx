@@ -6,6 +6,7 @@ import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import MenuDrawer from "../common/MenuDrawer";
 import Cookies from "js-cookie";
+import { DropdownMenu } from "../common";
 const StyledHeader = styled.header`
   background-color: #3072ff;
   display: flex;
@@ -61,7 +62,7 @@ const RootHeader = () => {
             <NavBar pages={pages} />
             {token ? (
               <div className="member-btn">
-                <Link to="/member">MEMBER</Link>
+                <DropdownMenu></DropdownMenu>
               </div>
             ) : (
               <div className="login-btn">

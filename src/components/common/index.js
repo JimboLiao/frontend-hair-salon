@@ -12,6 +12,7 @@ import { FormSelect } from "./FormSelect";
 import { SearchBar } from "./SearchBar";
 import { StyledButton } from "./StyledButton";
 import MenuDrawer from "./MenuDrawer";
+import DropdownMenu from "./DropdownMenu";
 export {
   BackgroundImage,
   CardImage,
@@ -27,4 +28,5 @@ export {
   SearchBar,
   StyledButton,
   MenuDrawer,
+  DropdownMenu,
 };
