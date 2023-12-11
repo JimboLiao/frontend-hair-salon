@@ -27,10 +27,10 @@ const LoginPage = () => {
   const formBoxStyle = { display: "flex", flexDirection: "column" };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //@todo onClicks
   const handleLogin = (event) => {
     loginApi(email, password);
   };
+  //@todo onClicks
   const handleForgot = (event) => {
     console.log(event.target);
   };

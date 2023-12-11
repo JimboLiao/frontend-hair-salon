@@ -1,6 +1,17 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
+const setCookies = (token, id) => {
+  Cookies.set("token", token, { expires: 1 });
+  Cookies.set("id", id);
+};
+
+const removeCookies = () => {
+  Cookies.remove("token");
+  Cookies.remove("id");
+};
+
 const getArrayDataApi = async (route) => {
   return axios
     .get(`${baseUrl}/${route}`)
@@ -61,7 +72,8 @@ const loginApi = (email, password) => {
     })
     .then((response) => {
       const token = response.data.token;
-      Cookies.set("token", token, { expires: 1 });
+      const id = response.data.id;
+      setCookies(token, id);
       window.location.href = "/";
     })
     .catch((error) => {
@@ -91,4 +103,5 @@ export {
   getProductAndBrandApi,
   loginApi,
   signupApi,
+  removeCookies,
 };

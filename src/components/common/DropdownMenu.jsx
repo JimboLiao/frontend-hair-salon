@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Popover, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Cookies from "js-cookie";
+import { removeCookies } from "../../api";
 
 const StyledDropdownButton = styled.div`
   color: whitesmoke;
@@ -24,7 +24,7 @@ const DropdownMenu = () => {
   };
 
   const handleLogout = () => {
-    Cookies.remove("token");
+    removeCookies();
     window.location.href = "/";
   };
 
