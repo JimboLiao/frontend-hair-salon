@@ -44,7 +44,7 @@ const getOneDataApi = async (route) => {
     });
 };
 
-const getOneDataWithAuthApi = async (route) => {
+const getDataWithAuthApi = async (route) => {
   const token = Cookies.get("token");
   if (!token) return null;
 
@@ -56,6 +56,27 @@ const getOneDataWithAuthApi = async (route) => {
 
   return axios
     .get(`${baseUrl}/${route}`, config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+const createDataWithAuthApi = async (route, data) => {
+  const token = Cookies.get("token");
+  if (!token) return null;
+
+  const requestBody = data;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios
+    .post(`${baseUrl}/${route}`, requestBody, config)
     .then((response) => {
       return response.data;
     })
@@ -139,7 +160,7 @@ const signupApi = (username, email, password) => {
 const getMemberApi = async () => {
   const id = Cookies.get("id");
   if (!id) return null;
-  const data = await getOneDataWithAuthApi(`members/${id}/profile`);
+  const data = await getDataWithAuthApi(`members/${id}/profile`);
   return data;
 };
 
@@ -147,7 +168,11 @@ const updateMemberApi = async (data) => {
   const id = Cookies.get("id");
   if (!id) return null;
   const result = await updateDataWithAuthApi(`members/${id}/`, data);
-  console.log("result:", result);
+  return result;
+};
+
+const createOrderApi = async (data) => {
+  const result = await createDataWithAuthApi(`orders/`, data);
   return result;
 };
 
@@ -161,4 +186,5 @@ export {
   removeCookies,
   getMemberApi,
   updateMemberApi,
+  createOrderApi,
 };

@@ -3,6 +3,8 @@ import { Box, Button, Stack, TextField } from "@mui/material";
 import { StyledContainer, StyledLink } from "../../components/common";
 import { CartContext } from "../../context/CartContext";
 import { useContext } from "react";
+import { createOrderApi } from "../../api";
+import Cookies from "js-cookie";
 
 const StyledPaymentTitle = styled.div`
   padding: 32px 0px;
@@ -11,14 +13,39 @@ const StyledPaymentTitle = styled.div`
 `;
 
 const PaymentPage = () => {
-  const { cart, setCart } = useContext(CartContext);
+  const { cart, setCart, deliverPrice } = useContext(CartContext);
 
   const handleOrder = () => {
+    const createNewOrder = async (data) => {
+      try {
+        await createOrderApi(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // if not login
+    if (!Cookies.get("id")) {
+      document.location.href("/login");
+      return;
+    }
+
     const newCart = cart.map((item) => {
       item.isPaid = true;
       return item;
     });
     setCart(newCart);
+
+    const productInfos = cart.map((product) => {
+      return { productId: product.id, productAmount: Number(product.amount) };
+    });
+    const newOrder = {
+      memberId: Number(Cookies.get("id")),
+      productInfos: productInfos,
+      delivery: deliverPrice,
+    };
+
+    createNewOrder(newOrder);
   };
   return (
     <main>
