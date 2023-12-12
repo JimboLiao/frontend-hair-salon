@@ -176,6 +176,11 @@ const createOrderApi = async (data) => {
   return result;
 };
 
+const getOrdersWithProductsApi = async () => {
+  const result = await getDataWithAuthApi(`orders/?_embed=products`);
+  return result;
+};
+
 export {
   getHairstylistsApi,
   getProductsApi,
@@ -187,4 +192,5 @@ export {
   getMemberApi,
   updateMemberApi,
   createOrderApi,
+  getOrdersWithProductsApi,
 };

@@ -1,6 +1,8 @@
 import { EmptyOrderHistory, OrderHistoryItem } from "../../components/order";
 import { StyledContainer } from "../../components/common";
 import { styled } from "styled-components";
+import { useEffect, useState } from "react";
+import { getOrdersWithProductsApi } from "../../api";
 
 const StyledOrderHistoryPage = styled.div`
   padding-top: 64px;
@@ -13,23 +15,35 @@ const StyledOrderHistoryPage = styled.div`
 `;
 
 const OrderHistoryPage = () => {
-  const items = [
-    {
-      date: "12/30",
-      status: "processing",
-      subtotal: 460,
-      delivery: 40,
-      total: 500,
-      products: [
-        {
-          productName: "Shampoo",
-          amount: 2,
-          price: 230,
-          imgUrl: "/images/products-2-1.png",
-        },
-      ],
-    },
-  ];
+  const convertToLocaleDate = (dateString) => {
+    const date = new Date(dateString);
+
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString(); // month starts with 0
+    const day = date.getDate().toString();
+
+    // 組合成 yyyy-mm-dd 格式
+    return `${year}-${month}-${day}`;
+  };
+
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    const getOrdersApi = async () => {
+      const orders = await getOrdersWithProductsApi();
+      for (let i = 0; i < orders.length; i++) {
+        orders[i].subtotal = orders[i].products.reduce(
+          (sum, product) => (sum += product.price * product.amount),
+          0
+        );
+        orders[i].total = orders[i].subtotal + orders[i].delivery;
+        orders[i].date = convertToLocaleDate(orders[i].date);
+      }
+
+      setItems(orders);
+    };
+    getOrdersApi();
+  }, []);
+
   return items.length === 0 ? (
     <StyledOrderHistoryPage>
       <StyledContainer>
