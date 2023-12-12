@@ -49,7 +49,9 @@ const DropdownMenu = () => {
         <MenuItem onClick={handleClose}>
           <StyledLink to="/member">Member Info</StyledLink>
         </MenuItem>
-        <MenuItem onClick={handleClose}>選項二</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <StyledLink to="/orderhistory">My Orders</StyledLink>
+        </MenuItem>
         <MenuItem onClick={handleClose}>
           <div onClick={handleLogout}>Logout</div>
         </MenuItem>

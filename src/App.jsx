@@ -14,6 +14,7 @@ import { PaymentPage } from "./pages/PaymentPage";
 import { OrderPage } from "./pages/OrderPage";
 import { MemberInfoPage } from "./pages/MemberInfoPage";
 import "./App.css";
+import { OrderHistoryPage } from "./pages/OrderHistoryPage";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { path: "payment", element: <PaymentPage /> },
       { path: "order", element: <OrderPage /> },
       { path: "member", element: <MemberInfoPage /> },
+      { path: "orderhistory", element: <OrderHistoryPage /> },
     ],
   },
 ]);
