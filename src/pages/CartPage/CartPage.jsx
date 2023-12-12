@@ -25,9 +25,14 @@ const CartPage = () => {
   // empty cart
   if (cart.length === 0)
     return (
-      <StyledContainer>
-        <EmptyCart></EmptyCart>
-      </StyledContainer>
+      <StyledCart>
+        <StyledContainer>
+          <div className="cart__title">
+            <h2>My Shopping Cart</h2>
+          </div>
+          <EmptyCart></EmptyCart>
+        </StyledContainer>
+      </StyledCart>
     );
   // display cart items
   else
