@@ -3,7 +3,7 @@ import { StyledContainer } from "../common";
 import OrderList from "./OrderList";
 import OrderSummary from "./OrderSummary";
 import { CartContext } from "../../context/CartContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const StyledOrderContainer = styled.div`
   padding-top: 64px;
@@ -17,8 +17,24 @@ const StyledOrderContainer = styled.div`
 `;
 
 const OrderSuccessful = () => {
-  const { orderSubTotal, deliverPrice, orderGrandTotal } =
+  const { orderSubTotal, deliverPrice, cart, setCart } =
     useContext(CartContext);
+
+  const [subTotal] = useState(orderSubTotal);
+  const [delivery] = useState(deliverPrice);
+  const [orderItems, setOrderItems] = useState([]);
+  useEffect(() => {
+    function handleInitialCartUpdate() {
+      const paidItems = cart.filter((el) => el.isPaid === true);
+      setOrderItems(paidItems);
+
+      const remainingItems = cart.filter((el) => el.isPaid !== true);
+      setCart(remainingItems);
+    }
+
+    handleInitialCartUpdate();
+  }, []);
+
   return (
     <StyledContainer>
       <StyledOrderContainer>
@@ -27,11 +43,11 @@ const OrderSuccessful = () => {
           <p>Your order has been successful.</p>
         </div>
       </StyledOrderContainer>
-      <OrderList />
+      <OrderList orderItems={orderItems} />
       <OrderSummary
-        subTotal={orderSubTotal}
-        deliverPrice={deliverPrice}
-        grandTotal={orderGrandTotal}
+        subTotal={subTotal}
+        deliverPrice={delivery}
+        grandTotal={subTotal + delivery}
       />
     </StyledContainer>
   );
