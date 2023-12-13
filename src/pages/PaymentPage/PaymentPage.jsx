@@ -5,6 +5,7 @@ import { CartContext } from "../../context/CartContext";
 import { useContext } from "react";
 import { createOrderApi } from "../../api";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const StyledPaymentTitle = styled.div`
   padding: 32px 0px;
@@ -13,6 +14,7 @@ const StyledPaymentTitle = styled.div`
 `;
 
 const PaymentPage = () => {
+  let navigate = useNavigate();
   const { cart, setCart, deliverPrice } = useContext(CartContext);
 
   const handleOrder = () => {
@@ -26,27 +28,29 @@ const PaymentPage = () => {
 
     // if not login
     if (!Cookies.get("id")) {
-      document.location.href("/login");
+      navigate("/login");
       return;
+    } else {
+      const newCart = cart.map((item) => {
+        item.isPaid = true;
+        return item;
+      });
+      setCart(newCart);
+
+      const productInfos = cart.map((product) => {
+        return { productId: product.id, productAmount: Number(product.amount) };
+      });
+      const newOrder = {
+        memberId: Number(Cookies.get("id")),
+        productInfos: productInfos,
+        delivery: deliverPrice,
+      };
+
+      createNewOrder(newOrder);
+      navigate("/order");
     }
-
-    const newCart = cart.map((item) => {
-      item.isPaid = true;
-      return item;
-    });
-    setCart(newCart);
-
-    const productInfos = cart.map((product) => {
-      return { productId: product.id, productAmount: Number(product.amount) };
-    });
-    const newOrder = {
-      memberId: Number(Cookies.get("id")),
-      productInfos: productInfos,
-      delivery: deliverPrice,
-    };
-
-    createNewOrder(newOrder);
   };
+
   return (
     <main>
       <StyledContainer>
@@ -94,7 +98,6 @@ const PaymentPage = () => {
             variant="contained"
             component={StyledLink}
             onClick={handleOrder}
-            to="/order"
           >
             Continue
           </Button>

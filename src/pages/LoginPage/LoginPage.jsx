@@ -4,6 +4,7 @@ import { Box, Button, Stack, TextField } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useState } from "react";
 import { loginApi } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 const StyledLoginBlock = styled.div`
   margin: 64px auto;
@@ -24,11 +25,13 @@ const StyledFormContainer = styled.div`
 `;
 
 const LoginPage = () => {
+  let navigate = useNavigate();
   const formBoxStyle = { display: "flex", flexDirection: "column" };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleLogin = (event) => {
     loginApi(email, password);
+    navigate("/");
   };
   //@todo onClicks
   const handleForgot = (event) => {

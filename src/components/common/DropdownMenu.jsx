@@ -3,6 +3,7 @@ import { Popover, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { removeCookies } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 const StyledDropdownButton = styled.div`
   color: whitesmoke;
@@ -13,6 +14,7 @@ const StyledLink = styled(Link)`
   color: black;
 `;
 const DropdownMenu = () => {
+  let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleDropdown = (event) => {
@@ -25,7 +27,7 @@ const DropdownMenu = () => {
 
   const handleLogout = () => {
     removeCookies();
-    window.location.href = "/";
+    navigate("/");
   };
 
   const open = Boolean(anchorEl);

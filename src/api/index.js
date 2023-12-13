@@ -135,7 +135,6 @@ const loginApi = (email, password) => {
       const token = response.data.token;
       const id = response.data.id;
       setCookies(token, id);
-      window.location.href = "/";
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -149,9 +148,7 @@ const signupApi = (username, email, password) => {
       email: email,
       password: password,
     })
-    .then((response) => {
-      window.location.href = "/login";
-    })
+    .then((response) => {})
     .catch((error) => {
       console.error("Error:", error);
     });

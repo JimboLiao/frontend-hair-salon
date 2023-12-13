@@ -3,6 +3,7 @@ import { StyledContainer } from "../../components/common";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import { signupApi } from "../../api";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const StyledSignupBlock = styled.div`
   margin: 64px 128px;
@@ -23,6 +24,7 @@ const StyledFormContainer = styled.div`
 `;
 
 const SignupPage = () => {
+  let navigate = useNavigate();
   const formBoxStyle = { display: "flex", flexDirection: "column" };
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -37,10 +39,11 @@ const SignupPage = () => {
   const handlePasswordText = (event) => {
     setPassword(event.target.value);
   };
-  //@todo onclick
+
   const handleSignUp = (event) => {
     if (username && email && password) {
       signupApi(username, email, password);
+      navigate("/login");
     } else {
       alert("Data missing. Please check.");
     }

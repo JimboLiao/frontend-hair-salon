@@ -4,6 +4,8 @@ import { CartContext } from "../../context/CartContext";
 import { CartItem, CartSummary, EmptyCart } from "../../components/cart";
 import { Button, Stack } from "@mui/material";
 import { useContext } from "react";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const StyledCart = styled.section`
   padding-top: 64px;
@@ -17,10 +19,15 @@ const StyledCart = styled.section`
 `;
 
 const CartPage = () => {
+  let navigate = useNavigate();
   const { cart, deliverPrice, subTotal, grandTotal } = useContext(CartContext);
-  //@todo onclick
+
   const handleCheckOut = (event) => {
-    console.log(event.target);
+    if (Cookies.get("id")) {
+      navigate("/payment");
+    } else {
+      navigate("/login");
+    }
   };
   // empty cart
   if (cart.length === 0)
@@ -55,7 +62,6 @@ const CartPage = () => {
             <Stack direction="row" justifyContent="flex-end">
               <Button
                 component={StyledLink}
-                to="/payment"
                 variant="contained"
                 onClick={handleCheckOut}
               >
