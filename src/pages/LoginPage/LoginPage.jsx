@@ -3,7 +3,7 @@ import { StyledContainer, StyledLink } from "../../components/common";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useState } from "react";
-import { loginApi } from "../../api";
+import { useLogin } from "../../api";
 import { useNavigate } from "react-router-dom";
 
 const StyledLoginBlock = styled.div`
@@ -29,8 +29,10 @@ const LoginPage = () => {
   const formBoxStyle = { display: "flex", flexDirection: "column" };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, loading } = useLogin();
+
   const handleLogin = (event) => {
-    loginApi(email, password);
+    login(email, password);
     navigate("/");
   };
   //@todo onClicks
@@ -56,60 +58,66 @@ const LoginPage = () => {
         <StyledLoginBlock>
           <h2>Login</h2>
           <StyledFormContainer>
-            <Box component="form" sx={formBoxStyle}>
-              <TextField
-                required
-                id="email"
-                label="E-mail"
-                type="email"
-                sx={{ paddingBottom: 2 }}
-                value={email}
-                onChange={handleLoginText}
-              />
-              <TextField
-                required
-                id="password"
-                label="Password"
-                type="password"
-                sx={{ paddingBottom: 2 }}
-                value={password}
-                onChange={handlePasswordText}
-              />
-            </Box>
-            <Box sx={{ paddingBottom: 8 }}>
-              <Stack spacing={2}>
-                <Stack
-                  direction="row"
-                  justifyContent="flex-end"
-                  alignItems="flex-start"
-                  spacing={2}
-                >
-                  <Button variant="outlined" onClick={handleForgot}>
-                    Forgot
-                  </Button>
-                  <Button variant="contained" onClick={handleLogin}>
-                    Login
-                  </Button>
-                </Stack>
-                <Stack spacing={2}>
-                  <Button
-                    variant="contained"
-                    startIcon={<GoogleIcon />}
-                    onClick={handleGoogleLogin}
-                  >
-                    Login with Google
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={handleSignUp}
-                    component={StyledLink}
-                    to="/signup"
-                  >
-                    Sign up
-                  </Button>
-                </Stack>
-              </Stack>
-            </Box>
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                <Box component="form" sx={formBoxStyle}>
+                  <TextField
+                    required
+                    id="email"
+                    label="E-mail"
+                    type="email"
+                    sx={{ paddingBottom: 2 }}
+                    value={email}
+                    onChange={handleLoginText}
+                  />
+                  <TextField
+                    required
+                    id="password"
+                    label="Password"
+                    type="password"
+                    sx={{ paddingBottom: 2 }}
+                    value={password}
+                    onChange={handlePasswordText}
+                  />
+                </Box>
+                <Box sx={{ paddingBottom: 8 }}>
+                  <Stack spacing={2}>
+                    <Stack
+                      direction="row"
+                      justifyContent="flex-end"
+                      alignItems="flex-start"
+                      spacing={2}
+                    >
+                      <Button variant="outlined" onClick={handleForgot}>
+                        Forgot
+                      </Button>
+                      <Button variant="contained" onClick={handleLogin}>
+                        Login
+                      </Button>
+                    </Stack>
+                    <Stack spacing={2}>
+                      <Button
+                        variant="contained"
+                        startIcon={<GoogleIcon />}
+                        onClick={handleGoogleLogin}
+                      >
+                        Login with Google
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleSignUp}
+                        component={StyledLink}
+                        to="/signup"
+                      >
+                        Sign up
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </Box>
+              </>
+            )}
           </StyledFormContainer>
         </StyledLoginBlock>
       </StyledContainer>

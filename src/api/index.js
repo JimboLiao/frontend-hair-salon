@@ -1,16 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
-
-const setCookies = (token, id) => {
-  Cookies.set("token", token, { expires: 1 });
-  Cookies.set("id", id);
-};
-
-const removeCookies = () => {
-  Cookies.remove("token");
-  Cookies.remove("id");
-};
 
 const getArrayDataApi = async (route) => {
   return axios
@@ -125,20 +116,50 @@ const getProductAndBrandApi = async (productId) => {
   return data;
 };
 
-const loginApi = (email, password) => {
-  axios
-    .post(`${baseUrl}/members/login`, {
-      email: email,
-      password: password,
-    })
-    .then((response) => {
-      const token = response.data.token;
-      const id = response.data.id;
+const useLogin = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const setCookies = (token, id) => {
+    Cookies.set("token", token, { expires: 1, path: "/" });
+    Cookies.set("id", id, { path: "/" });
+  };
+
+  const removeCookies = () => {
+    Cookies.remove("token");
+    Cookies.remove("id");
+  };
+
+  const login = async (email, password) => {
+    setLoading(true);
+    try {
+      const response = await axios.post(`${baseUrl}/members/login`, {
+        email: email,
+        password: password,
+      });
+      const { token, id } = response.data;
       setCookies(token, id);
-    })
-    .catch((error) => {
+      setIsLoggedIn(true);
+      setLoading(false);
+    } catch (error) {
       console.error("Error:", error);
-    });
+      setLoading(false);
+    }
+  };
+
+  const logout = () => {
+    removeCookies();
+    setIsLoggedIn(false);
+  };
+
+  return { isLoggedIn, login, logout, loading };
 };
 
 const signupApi = (username, email, password) => {
@@ -183,11 +204,10 @@ export {
   getProductsApi,
   getBrandsApi,
   getProductAndBrandApi,
-  loginApi,
   signupApi,
-  removeCookies,
   getMemberApi,
   updateMemberApi,
   createOrderApi,
   getOrdersWithProductsApi,
+  useLogin,
 };

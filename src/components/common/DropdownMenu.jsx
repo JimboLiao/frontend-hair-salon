@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Popover, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { removeCookies } from "../../api";
+import { useLogin } from "../../api";
 import { useNavigate } from "react-router-dom";
 
 const StyledDropdownButton = styled.div`
@@ -16,6 +16,7 @@ const StyledLink = styled(Link)`
 const DropdownMenu = () => {
   let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+  const { logout } = useLogin();
 
   const handleDropdown = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,7 +27,7 @@ const DropdownMenu = () => {
   };
 
   const handleLogout = () => {
-    removeCookies();
+    logout();
     navigate("/");
   };
 
