@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Popover, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useLogin } from "../../api";
+import { useLoginContext } from "../../context/LoginContext";
 import { useNavigate } from "react-router-dom";
 
 const StyledDropdownButton = styled.div`
@@ -16,7 +16,7 @@ const StyledLink = styled(Link)`
 const DropdownMenu = () => {
   let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const { logout } = useLogin();
+  const { logout } = useLoginContext();
 
   const handleDropdown = (event) => {
     setAnchorEl(event.currentTarget);

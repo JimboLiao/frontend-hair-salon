@@ -16,7 +16,7 @@ const StyledLink = styled(Link)`
   width: 100%;
 `;
 
-const MenuDrawer = ({ pages, token }) => {
+const MenuDrawer = ({ pages, isLoggedIn }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   return (
@@ -42,7 +42,7 @@ const MenuDrawer = ({ pages, token }) => {
           })}
           <ListItem>
             <ListItemButton>
-              {token ? (
+              {isLoggedIn ? (
                 <StyledLink to="/member">
                   <ListItemText sx={{ color: "black" }}>MEMBER</ListItemText>
                 </StyledLink>

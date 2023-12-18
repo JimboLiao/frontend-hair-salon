@@ -8,6 +8,7 @@ import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { CartPage } from "./pages/CartPage";
 import { LoginPage } from "./pages/LoginPage";
 import CartProvider from "./context/CartContext";
+import { LoginProvider } from "./context/LoginContext";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { SignupPage } from "./pages/SignupPage";
 import { PaymentPage } from "./pages/PaymentPage";
@@ -45,11 +46,13 @@ const theme = createTheme({
 
 const App = () => {
   return (
-    <CartProvider>
-      <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </CartProvider>
+    <LoginProvider>
+      <CartProvider>
+        <ThemeProvider theme={theme}>
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </CartProvider>
+    </LoginProvider>
   );
 };
 

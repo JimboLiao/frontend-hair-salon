@@ -5,7 +5,7 @@ import LogoLink from "../common/LogoLink";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import MenuDrawer from "../common/MenuDrawer";
-import Cookies from "js-cookie";
+import { useLoginContext } from "../../context/LoginContext";
 import { DropdownMenu } from "../common";
 const StyledHeader = styled.header`
   background-color: #3072ff;
@@ -43,7 +43,7 @@ const RootHeader = () => {
   const theme = useTheme();
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const pages = ["about", "products", "cart"];
-  const token = Cookies.get("token");
+  const { isLoggedIn } = useLoginContext();
 
   return (
     <StyledHeader>
@@ -53,14 +53,14 @@ const RootHeader = () => {
       {isDownMd ? (
         // screen size below md
         <div className="menu-container">
-          <MenuDrawer pages={pages} token={token} />
+          <MenuDrawer pages={pages} isLoggedIn={isLoggedIn} />
         </div>
       ) : (
         // screen size over md
         <>
           <div className="btn-container">
             <NavBar pages={pages} />
-            {token ? (
+            {isLoggedIn ? (
               <div className="member-btn">
                 <DropdownMenu></DropdownMenu>
               </div>

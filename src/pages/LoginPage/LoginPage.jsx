@@ -3,7 +3,7 @@ import { StyledContainer, StyledLink } from "../../components/common";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useState } from "react";
-import { useLogin } from "../../api";
+import { useLoginContext } from "../../context/LoginContext";
 import { useNavigate } from "react-router-dom";
 
 const StyledLoginBlock = styled.div`
@@ -29,7 +29,7 @@ const LoginPage = () => {
   const formBoxStyle = { display: "flex", flexDirection: "column" };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, loading } = useLogin();
+  const { login, loading } = useLoginContext();
 
   const handleLogin = (event) => {
     login(email, password);
