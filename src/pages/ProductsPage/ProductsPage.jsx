@@ -2,7 +2,7 @@ import { StyledContainer } from "../../components/common";
 import { styled } from "styled-components";
 import { ProductList, ProductForm } from "../../components/products";
 import { useState, useEffect } from "react";
-import { getProductsApi } from "../../api";
+import { getProductsApi, getBrandsApi } from "../../api";
 
 const StyledProduct = styled.section`
   padding-top: 64px;
@@ -23,16 +23,28 @@ const ProductsPage = () => {
 
   // products
   const [products, setProducts] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const getAndSetProducts = async () => {
-      const data = await getProductsApi();
-      setProducts(data);
+    const initalSettings = async () => {
+      try {
+        const productData = await getProductsApi();
+        setProducts(productData);
+        const brandData = await getBrandsApi();
+        setBrands(brandData);
+        setCategories([
+          ...new Set(productData.map((product) => product.category)),
+        ]);
+      } catch (error) {
+        console.error(error);
+      }
     };
-    getAndSetProducts();
+
+    initalSettings();
   }, []);
 
-  const brandOptions = ["Paul Michael", "Moroccanoil"];
+  // @todo 1. remove brandOptions and categoryOptions
   const categoryOptions = ["Shampoo", "Conditioner", "Pomade", "Hair oil"];
 
   //@todo form select brand
@@ -59,8 +71,8 @@ const ProductsPage = () => {
             onSelectBrand={handleSelectBrand}
             onSelectCategory={handleSelectCategory}
             onSearch={handleSearch}
-            brandOptions={brandOptions}
-            categoryOptions={categoryOptions}
+            brandOptions={brands.map((brand) => brand.brandName)}
+            categoryOptions={categories}
           />
           <ProductList products={products}></ProductList>
         </StyledContainer>
