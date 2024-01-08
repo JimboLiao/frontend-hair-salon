@@ -15,12 +15,20 @@ const StyledPaymentTitle = styled.div`
 
 const PaymentPage = () => {
   let navigate = useNavigate();
-  const { cart, setCart, deliverPrice } = useContext(CartContext);
+  const { cart, setCart, deliverPrice, grandTotal } = useContext(CartContext);
+
+  const openNewTab = (html) => {
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(html);
+    newWindow.document.close();
+  };
 
   const handleOrder = () => {
     const createNewOrder = async (data) => {
       try {
-        await createOrderApi(data);
+        const html = await createOrderApi(data);
+        console.log(html);
+        openNewTab(html);
       } catch (error) {
         console.error(error);
       }
@@ -38,12 +46,16 @@ const PaymentPage = () => {
       setCart(newCart);
 
       const productInfos = cart.map((product) => {
-        return { productId: product.id, productAmount: Number(product.amount) };
+        return {
+          productId: product.id,
+          productAmount: Number(product.amount),
+        };
       });
       const newOrder = {
         memberId: Number(Cookies.get("id")),
         productInfos: productInfos,
         delivery: deliverPrice,
+        grandTotal: grandTotal,
       };
 
       createNewOrder(newOrder);
