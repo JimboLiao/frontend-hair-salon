@@ -9,7 +9,7 @@ import {
 import { ProductSummary } from "../../components/products";
 import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getProductsApi, getBrandsApi } from "../../api";
+import { getBrandsApi, getProductsOfBrandApi } from "../../api";
 
 const StyledJumbotron = styled.section`
   padding: 240px 0px;
@@ -86,36 +86,25 @@ const StyledProductSummary = styled.section`
 `;
 
 const HomePage = () => {
-  const [brands, setBrands] = useState([]);
-  const [products, setProducts] = useState([]);
   const [brandsWithProducts, setBrandsWithProducts] = useState([]);
 
-  useEffect(() => {
-    const getAndSetBrands = async () => {
-      const data = await getBrandsApi();
-      setBrands(data.data);
-    };
-    getAndSetBrands();
-  }, []);
-
-  useEffect(() => {
-    const getAndSetProducts = async () => {
-      const data = await getProductsApi();
-      setProducts(data.data);
-    };
-    getAndSetProducts();
-  }, []);
-
-  useEffect(() => {
-    const results = brands.map((brand) => {
-      const brandProducts = products.filter(
-        (product) => product.brandId === brand.id
-      );
-      brand.products = brandProducts;
-      return brand;
+  function getAndSetProducts(brands) {
+    Promise.all(
+      brands.map((brand) =>
+        getProductsOfBrandApi(brand.id).then((products) => ({
+          ...brand,
+          products: products.data,
+        }))
+      )
+    ).then((products) => {
+      setBrandsWithProducts(products);
     });
-    setBrandsWithProducts(results);
-  }, [brands, products]);
+  }
+  useEffect(() => {
+    getBrandsApi().then((data) => {
+      getAndSetProducts(data.data);
+    });
+  }, []);
 
   return (
     <main>

@@ -148,6 +148,11 @@ const getOrdersWithProductsApi = async () => {
   return result;
 };
 
+const getProductsOfBrandApi = async (brandId) => {
+  const result = await getArrayDataApi(`products/?brandId=${brandId}`);
+  return result;
+};
+
 export {
   getHairstylistsApi,
   getProductsApi,
@@ -158,4 +163,5 @@ export {
   updateMemberApi,
   createOrderApi,
   getOrdersWithProductsApi,
+  getProductsOfBrandApi,
 };
