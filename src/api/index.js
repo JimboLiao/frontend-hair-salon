@@ -6,8 +6,9 @@ const getArrayDataApi = async (route) => {
   return axios
     .get(`${baseUrl}/${route}`)
     .then((response) => {
+      console.log("response = ", response);
       // 確保 response.data 是一個陣列
-      if (Array.isArray(response.data)) {
+      if (Array.isArray(response.data.data)) {
         return response.data;
       } else {
         console.error("Error: received data is not an array", response.data);
@@ -22,12 +23,7 @@ const getOneDataApi = async (route) => {
   return axios
     .get(`${baseUrl}/${route}`)
     .then((response) => {
-      // 確保 response.data 是一個物件
-      if (typeof response.data === "object") {
-        return response.data;
-      } else {
-        console.error("type error", response.data);
-      }
+      return response.data;
     })
     .catch((error) => {
       console.error(error);

@@ -30,11 +30,11 @@ const ProductsPage = () => {
     const initalSettings = async () => {
       try {
         const productData = await getProductsApi();
-        setProducts(productData);
+        setProducts(productData.data);
         const brandData = await getBrandsApi();
-        setBrands(brandData);
+        setBrands(brandData.data);
         setCategories([
-          ...new Set(productData.map((product) => product.category)),
+          ...new Set(productData.data.map((product) => product.category)),
         ]);
       } catch (error) {
         console.error(error);

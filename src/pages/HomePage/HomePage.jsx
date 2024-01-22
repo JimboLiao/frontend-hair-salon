@@ -93,7 +93,7 @@ const HomePage = () => {
   useEffect(() => {
     const getAndSetBrands = async () => {
       const data = await getBrandsApi();
-      setBrands(data);
+      setBrands(data.data);
     };
     getAndSetBrands();
   }, []);
@@ -101,7 +101,7 @@ const HomePage = () => {
   useEffect(() => {
     const getAndSetProducts = async () => {
       const data = await getProductsApi();
-      setProducts(data);
+      setProducts(data.data);
     };
     getAndSetProducts();
   }, []);

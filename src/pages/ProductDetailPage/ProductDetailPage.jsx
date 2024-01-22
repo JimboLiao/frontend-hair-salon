@@ -32,13 +32,13 @@ const ProductDetailPage = () => {
 
   // products
   const { productId } = useParams();
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({});
   const [brand, setBrand] = useState(null);
   useEffect(() => {
     const getAndSetProductAndBrand = async () => {
       const data = await getProductAndBrandApi(productId);
-      setProduct(data.product);
-      setBrand(data.brand);
+      setProduct(data.data.product);
+      setBrand(data.data.brand);
     };
     getAndSetProductAndBrand();
   }, [productId]);

@@ -29,7 +29,8 @@ const OrderHistoryPage = () => {
   const [items, setItems] = useState([]);
   useEffect(() => {
     const getOrdersApi = async () => {
-      const orders = await getOrdersWithProductsApi();
+      const data = await getOrdersWithProductsApi();
+      const orders = data.data;
       for (let i = 0; i < orders.length; i++) {
         orders[i].subtotal = orders[i].products.reduce(
           (sum, product) => (sum += product.price * product.amount),

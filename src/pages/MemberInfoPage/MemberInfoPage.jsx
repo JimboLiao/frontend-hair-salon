@@ -31,14 +31,15 @@ const MemberInfoPage = () => {
   useEffect(() => {
     const getMemberInfo = async () => {
       const data = await getMemberApi();
-      setEmail(data.email);
-      setUsername(data.username);
-      setBirthday(data.birthday);
-      setFirstName(data.firstName);
-      setLastName(data.lastName);
-      setCity(data.city);
-      setPostNumber(data.postNumber);
-      setAddress(data.address);
+      const member = data.data;
+      setEmail(member.email);
+      setUsername(member.username);
+      setBirthday(member.birthday);
+      setFirstName(member.firstName);
+      setLastName(member.lastName);
+      setCity(member.city);
+      setPostNumber(member.postNumber);
+      setAddress(member.address);
     };
 
     getMemberInfo();
