@@ -162,15 +162,29 @@ const getProductsQueryApi = async ({ brandId, category }) => {
       : category
       ? `?category=${category}`
       : ``;
-  const arrayData = await getArrayDataApi(`products/${query}`);
-  return arrayData;
+  let arrayData = await getArrayDataApi(`products/${query}`);
+  return { ...arrayData, route: `products/${query}` };
 };
 
 const searchProductsApi = async (q) => {
-  const arrayData = await getArrayDataApi(`products/search?q=${q}`);
+  let arrayData = await getArrayDataApi(`products/search?q=${q}`);
   return arrayData;
 };
 
+const filterProductsApi = async ({ brandId, category, q }) => {
+  if (q) {
+    return searchProductsApi(q);
+  } else {
+    return getProductsQueryApi({ brandId, category });
+  }
+};
+
+const nextPageProductsApi = async ({ route, page }) => {
+  let str = route.includes("?")
+    ? `${route}&page=${page}`
+    : `${route}?page=${page}`;
+  return getArrayDataApi(str);
+};
 export {
   getHairstylistsApi,
   getProductsApi,
@@ -184,4 +198,6 @@ export {
   getProductsOfBrandApi,
   getProductsQueryApi,
   searchProductsApi,
+  filterProductsApi,
+  nextPageProductsApi,
 };

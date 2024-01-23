@@ -1,12 +1,13 @@
-import { StyledContainer } from "../../components/common";
+import { StyledContainer, StyledLink } from "../../components/common";
 import { styled } from "styled-components";
 import { ProductList, ProductForm } from "../../components/products";
 import { useState, useEffect } from "react";
+import { Button } from "@mui/material";
 import {
   getProductsApi,
   getBrandsApi,
-  getProductsQueryApi,
-  searchProductsApi,
+  filterProductsApi,
+  nextPageProductsApi,
 } from "../../api";
 
 const StyledProduct = styled.section`
@@ -29,14 +30,17 @@ const ProductsPage = () => {
   // products
   const [products, setProducts] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [route, setRoute] = useState("/products");
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState({});
+  const [pagination, setPagination] = useState({});
 
   useEffect(() => {
     const initalSettings = async () => {
       try {
         const productData = await getProductsApi();
         setProducts(productData.data);
+        setPagination(productData.pagination);
         const brandData = await getBrandsApi();
         setBrands(brandData.data);
         setCategories([
@@ -51,7 +55,7 @@ const ProductsPage = () => {
   }, []);
 
   async function getFilteredProducts(filter) {
-    const data = await getProductsQueryApi(filter);
+    const data = await filterProductsApi(filter);
     return data;
   }
 
@@ -66,6 +70,8 @@ const ProductsPage = () => {
     setFilter(newFilter);
     getFilteredProducts(newFilter).then((data) => {
       setProducts(data.data);
+      setPagination(data.pagination);
+      setRoute(data.route);
     });
   };
 
@@ -75,13 +81,26 @@ const ProductsPage = () => {
     setFilter(newFilter);
     getFilteredProducts(newFilter).then((data) => {
       setProducts(data.data);
+      setPagination(data.pagination);
+      setRoute(data.route);
     });
   };
 
   const handleSearch = (event) => {
-    searchProductsApi(event.target.value).then((data) => {
+    filterProductsApi({ q: event.target.value }).then((data) => {
       setProducts(data.data);
+      setPagination(data.pagination);
+      setRoute(data.route);
     });
+  };
+
+  const handleMore = (event) => {
+    nextPageProductsApi({ route: route, page: pagination.nextPage }).then(
+      (data) => {
+        setProducts([...products, ...data.data]);
+        setPagination(data.pagination);
+      }
+    );
   };
 
   return (
@@ -99,6 +118,17 @@ const ProductsPage = () => {
             categoryOptions={categories}
           />
           <ProductList products={products}></ProductList>
+          {pagination.nextPage ? (
+            <Button
+              variant="contained"
+              component={StyledLink}
+              onClick={handleMore}
+            >
+              More
+            </Button>
+          ) : (
+            <></>
+          )}
         </StyledContainer>
       </StyledProduct>
     </main>
