@@ -153,6 +153,19 @@ const getProductsOfBrandApi = async (brandId) => {
   return result;
 };
 
+const getProductsQueryApi = async ({ brandId, category }) => {
+  const query =
+    brandId && category
+      ? `?brandId=${brandId}&category=${category}`
+      : brandId
+      ? `?brandId=${brandId}`
+      : category
+      ? `?category = ${category}`
+      : ``;
+  console.log("query = ", query);
+  const arrayData = await getArrayDataApi(`products/${query}`);
+  return arrayData;
+};
 export {
   getHairstylistsApi,
   getProductsApi,
@@ -164,4 +177,5 @@ export {
   createOrderApi,
   getOrdersWithProductsApi,
   getProductsOfBrandApi,
+  getProductsQueryApi,
 };

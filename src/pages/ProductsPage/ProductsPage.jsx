@@ -2,7 +2,7 @@ import { StyledContainer } from "../../components/common";
 import { styled } from "styled-components";
 import { ProductList, ProductForm } from "../../components/products";
 import { useState, useEffect } from "react";
-import { getProductsApi, getBrandsApi } from "../../api";
+import { getProductsApi, getBrandsApi, getProductsQueryApi } from "../../api";
 
 const StyledProduct = styled.section`
   padding-top: 64px;
@@ -25,6 +25,7 @@ const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [filter, setFilter] = useState({});
 
   useEffect(() => {
     const initalSettings = async () => {
@@ -44,16 +45,32 @@ const ProductsPage = () => {
     initalSettings();
   }, []);
 
-  // @todo 1. remove brandOptions and categoryOptions
-  const categoryOptions = ["Shampoo", "Conditioner", "Pomade", "Hair oil"];
+  async function getFilteredProducts(filter) {
+    const data = await getProductsQueryApi(filter);
+    return data;
+  }
 
-  //@todo form select brand
   const handleSelectBrand = (event) => {
-    console.log("brand select = ", event.target.value);
+    function getBrandId(b) {
+      for (const brand of brands) {
+        if (brand.brandName === b) return brand.id;
+      }
+    }
+    const brandId = getBrandId(event.target.value);
+    const newFilter = { ...filter, brandId: brandId };
+    setFilter(newFilter);
+    getFilteredProducts(newFilter).then((data) => {
+      setProducts(data.data);
+    });
   };
-  //@todo form select category
+
   const handleSelectCategory = (event) => {
-    console.log("category select = ", event.target.value);
+    const category = event.target.value;
+    const newFilter = { ...filter, category: category };
+    setFilter(newFilter);
+    getFilteredProducts(newFilter).then((data) => {
+      setProducts(data.data);
+    });
   };
   //@todo form search
   const handleSearch = (event) => {
