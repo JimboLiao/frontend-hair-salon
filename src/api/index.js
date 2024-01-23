@@ -160,7 +160,7 @@ const getProductsQueryApi = async ({ brandId, category }) => {
       : brandId
       ? `?brandId=${brandId}`
       : category
-      ? `?category = ${category}`
+      ? `?category=${category}`
       : ``;
   const arrayData = await getArrayDataApi(`products/${query}`);
   return arrayData;
