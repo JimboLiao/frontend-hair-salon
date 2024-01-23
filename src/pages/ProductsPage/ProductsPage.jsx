@@ -2,7 +2,12 @@ import { StyledContainer } from "../../components/common";
 import { styled } from "styled-components";
 import { ProductList, ProductForm } from "../../components/products";
 import { useState, useEffect } from "react";
-import { getProductsApi, getBrandsApi, getProductsQueryApi } from "../../api";
+import {
+  getProductsApi,
+  getBrandsApi,
+  getProductsQueryApi,
+  searchProductsApi,
+} from "../../api";
 
 const StyledProduct = styled.section`
   padding-top: 64px;
@@ -72,9 +77,11 @@ const ProductsPage = () => {
       setProducts(data.data);
     });
   };
-  //@todo form search
+
   const handleSearch = (event) => {
-    console.log("search  = ", event.target.value);
+    searchProductsApi(event.target.value).then((data) => {
+      setProducts(data.data);
+    });
   };
 
   return (

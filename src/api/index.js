@@ -162,10 +162,15 @@ const getProductsQueryApi = async ({ brandId, category }) => {
       : category
       ? `?category = ${category}`
       : ``;
-  console.log("query = ", query);
   const arrayData = await getArrayDataApi(`products/${query}`);
   return arrayData;
 };
+
+const searchProductsApi = async (q) => {
+  const arrayData = await getArrayDataApi(`products/search?q=${q}`);
+  return arrayData;
+};
+
 export {
   getHairstylistsApi,
   getProductsApi,
@@ -178,4 +183,5 @@ export {
   getOrdersWithProductsApi,
   getProductsOfBrandApi,
   getProductsQueryApi,
+  searchProductsApi,
 };
