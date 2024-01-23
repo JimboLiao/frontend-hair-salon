@@ -168,7 +168,7 @@ const getProductsQueryApi = async ({ brandId, category }) => {
 
 const searchProductsApi = async (q) => {
   let arrayData = await getArrayDataApi(`products/search?q=${q}`);
-  return arrayData;
+  return { ...arrayData, route: `products/search?q=${q}` };
 };
 
 const filterProductsApi = async ({ brandId, category, q }) => {
@@ -180,7 +180,7 @@ const filterProductsApi = async ({ brandId, category, q }) => {
 };
 
 const nextPageProductsApi = async ({ route, page }) => {
-  let str = route.includes("?")
+  let str = route?.includes("?")
     ? `${route}&page=${page}`
     : `${route}?page=${page}`;
   return getArrayDataApi(str);
