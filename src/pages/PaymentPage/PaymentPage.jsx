@@ -24,43 +24,44 @@ const PaymentPage = () => {
   };
 
   const handleOrder = () => {
-    const createNewOrder = async (data) => {
-      try {
-        const html = await createOrderApi(data);
-        console.log(html);
-        openNewTab(html);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    // const createNewOrder = async (data) => {
+    //   try {
+    //     const html = await createOrderApi(data);
+    //     console.log(html);
+    //     openNewTab(html);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
 
-    // if not login
-    if (!Cookies.get("id")) {
-      navigate("/login");
-      return;
-    } else {
-      const newCart = cart.map((item) => {
-        item.isPaid = true;
-        return item;
-      });
-      setCart(newCart);
+    // // if not login
+    // if (!Cookies.get("id")) {
+    //   navigate("/login");
+    //   return;
+    // } else {
+    //   const newCart = cart.map((item) => {
+    //     item.isPaid = true;
+    //     return item;
+    //   });
+    //   setCart(newCart);
 
-      const productInfos = cart.map((product) => {
-        return {
-          productId: product.id,
-          productAmount: Number(product.amount),
-        };
-      });
-      const newOrder = {
-        memberId: Number(Cookies.get("id")),
-        productInfos: productInfos,
-        delivery: deliverPrice,
-        grandTotal: grandTotal,
-      };
+    //   const productInfos = cart.map((product) => {
+    //     return {
+    //       productId: product.id,
+    //       productAmount: Number(product.amount),
+    //     };
+    //   });
+    //   const newOrder = {
+    //     memberId: Number(Cookies.get("id")),
+    //     productInfos: productInfos,
+    //     delivery: deliverPrice,
+    //     grandTotal: grandTotal,
+    //   };
 
-      createNewOrder(newOrder);
-      navigate("/order");
-    }
+    //   createNewOrder(newOrder);
+    //   navigate("/order");
+    // }
+    navigate("/ecpay");
   };
 
   return (

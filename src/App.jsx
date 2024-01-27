@@ -16,6 +16,7 @@ import { OrderPage } from "./pages/OrderPage";
 import { MemberInfoPage } from "./pages/MemberInfoPage";
 import "./App.css";
 import { OrderHistoryPage } from "./pages/OrderHistoryPage";
+import { ECPayPage } from "./pages/ECPayPage";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
       { path: "payment", element: <PaymentPage /> },
+      { path: "ecpay", element: <ECPayPage /> },
       { path: "order", element: <OrderPage /> },
       { path: "member", element: <MemberInfoPage /> },
       { path: "orderhistory", element: <OrderHistoryPage /> },
